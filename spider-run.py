@@ -4,7 +4,7 @@ from spider import Spider,Parser
 from concurrent.futures import ThreadPoolExecutor
 
 
-MAX_WORKERS = 30
+MAX_WORKERS = 50
 
 pool = ThreadPoolExecutor(max_workers = MAX_WORKERS)
 
