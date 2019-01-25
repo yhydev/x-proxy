@@ -28,7 +28,6 @@ class Spider:
 
             except Exception as e:
                 logging.error("Can't access:%s",url)
-                break
                 
 
     def getProxys(self):
