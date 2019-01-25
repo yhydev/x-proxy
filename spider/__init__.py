@@ -1,2 +1,2 @@
-from spider import Spider
-from parser import Parser 
+from .spider import Spider
+from .parser import Parser 
