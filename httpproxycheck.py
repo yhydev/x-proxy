@@ -23,7 +23,6 @@ SLEEP_SEC = 1
 #CHECK_URL = "http://www.google.com"
 #CHECK_URL = "https://www.baidu.com/s?wd=test"
 CHECK_URL = "http://www.httpbin.org/ip"
-
 PROXY_FILENAME = "proxy.list"
 
 
