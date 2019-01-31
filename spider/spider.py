@@ -30,11 +30,12 @@ def randIP():
     return "%s.%s.%s.%s" % (mask8, mask16, mask24, mask32)
 
 
+proxys = Proxys("proxy.list")
 
 class Spider:
 
 
-    proxys = Proxys("proxy.list")
+
     
 
 
@@ -84,7 +85,7 @@ class Spider:
                     proxyflag = False
 
             except Exception as e:
-                logging.debug(e)    
+                logging.error(e)    
                 proxyflag = False
             
                 
