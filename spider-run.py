@@ -2,7 +2,7 @@
 import loginit, logging, config, time
 from spider import Spider,Parser
 from concurrent.futures import ThreadPoolExecutor
-
+from api import proxyapi
 
 MAX_WORKERS = 8 
 
@@ -14,10 +14,12 @@ while True:
         spider = Spider(op["urls"], parser)
 
         proxys = spider.getProxys()
-
+   #     proxyapi.add(proxys)
+        
         for proxy in proxys:
-            proxyfile.write("%s:%s\n" % (proxy.ip, proxy.port))
+            proxyapi.add(proxy)     
+#            proxyfile.write("%s:%s\n" % (proxy.ip, proxy.port))
             logging.debug("add new proxy.")
-    
+        
     logging.debug("readly next spiders.")
     time.sleep(60 * 10)

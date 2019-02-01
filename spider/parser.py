@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import re, logging 
 from .xparser import *
-from .proxy import Proxy
+import sys
+sys.path.append("..")
+from model import Proxy
 class Parser:
     
     def __init__(self, proxyre, ipre, portre, protocolre):
@@ -27,7 +29,7 @@ class Parser:
             logging.debug('port match: %s' % port)
             proto = findone(self._protocolre, proxystr)
             logging.debug('protocol match: %s' % proto)
-            proxy = Proxy(ip, port, proto)
+            proxy = Proxy(ip = ip, port = port)
             proxylist.append(proxy)
         
         return proxylist
