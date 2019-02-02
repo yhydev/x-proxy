@@ -15,7 +15,8 @@ class Proxy(Base):
     port = Column(Integer)
     checkcount = Column(Integer, default = 0)
     successcount = Column(Integer, default = 0)
-
-
-
+    successrate = Column(Integer, default = 0)
+    createtime = Column(Integer)
+    def __repr__(self):
+        return "%s:%s successcount %s checkcount %s successrate %s" % (self.ip, self.port, self.successcount, self.checkcount, self.successrate)
 

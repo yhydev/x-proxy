@@ -22,7 +22,26 @@ urls = ["https://www.my-proxy.com/free-proxy-list-1.html",
 
 spiderConfig = []
 
+"""
+spiderConfig.append({
+    "urls": "http://www.66ip.cn/nmtq.php?getnum=9999",
+    "proxyre": proxyre,
+    "ipre": ipre,
+    "portre": portre,
+    "prore": prore  
+})
+"""
 
+
+
+
+spiderConfig.append({
+    "urls": urls,
+    "proxyre": proxyre,
+    "ipre": ipre,
+    "portre": portre,
+    "prore" : prore
+})
 
 spiderConfig.append({
     "urls": ["https://www.proxy-list.download/api/v0/get?l=en&t=http", "https://www.proxy-list.download/api/v0/get?l=en&t=https"],
@@ -32,13 +51,7 @@ spiderConfig.append({
     "prore": prore
 })
 
-spiderConfig.append({
-    "urls": urls,
-    "proxyre": proxyre,
-    "ipre": ipre,
-    "portre": portre,
-    "prore" : prore
-})
+
 
 
 spiderConfig.append({
