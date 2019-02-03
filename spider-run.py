@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 from __future__ import division
-import loginit, logging, config, time
+import logger, config, time
 from spider import Spider,Parser
 from api import proxyapi
 import threading, requests
 from concurrent.futures import ThreadPoolExecutor
+import apiserver
 
 
 def crawing():
 
-    logging.info("crawing start..")
+    logger.info("crawing start..")
     while True:
         for op in config.spiderConfig:
             parser = Parser(op["proxyre"], op["ipre"], op["portre"], op["proxyre"])
@@ -20,9 +21,9 @@ def crawing():
             for proxy in proxys:
                 proxyapi.add(proxy)     
             
-        logging.info("next crawing.")
+        logger.info("next crawing.")
         time.sleep(60 * 10)
-
+        
 
 
 def checkhttpproxy(proxy, targeturl):
@@ -32,7 +33,6 @@ def checkhttpproxy(proxy, targeturl):
         "https": "https://%s:%s" % (proxy.ip, proxy.port),
     }
     
-    
     checkcount = proxy.checkcount + 1
     successcount = proxy.successcount    
 
@@ -40,11 +40,11 @@ def checkhttpproxy(proxy, targeturl):
         resp = requests.get(targeturl, timeout = 1, proxies = proxies)
         if resp.status_code == 200:
             successcount += 1
-            logging.info("check http proxy success: %s" % proxies)
+            logger.info("check http proxy success: %s" % proxies)
         else:
-            logging.info("check http proxy error status: %s" % proxies)
+            logger.info("check http proxy error status: %s" % proxies)
     except Exception as e:
-        logging.debug("check http proxy except %s: " % proxies)
+        logger.debug("check http proxy except %s: " % proxies)
     finally:
         proxyapi.updatebyid(proxy.id, checkcount = checkcount,
              successrate =  int(successcount * 100 / checkcount),
@@ -53,20 +53,35 @@ def checkhttpproxy(proxy, targeturl):
 
 
 def checkhttpproxys():
-    logging.info("check http proxy list start..")
+    logger.info("check http proxy list start..")
     pool = ThreadPoolExecutor(32)
-    while True:
+    for i in range(0, 64):
         proxy = proxyapi.getrand()
         if proxy == None:
-            logging.info("database not exists proxy")
+            logger.info("database not exists proxy")
         else:
             pool.submit(checkhttpproxy, proxy, "http://httpbin.org/ip")
+        
 
             
 
 
 if __name__ == "__main__":
+
+
+
+    apiserverthread = threading.Thread(target = apiserver.run)
+    apiserverthread.start()
+
     crawingthread = threading.Thread(target = crawing)
-    checkthread = threading.Thread(target = checkhttpproxys)
     crawingthread.start()
-    checkthread.start()
+    
+    while True:
+        checkthread = threading.Thread(target = checkhttpproxys)
+        checkthread.start()
+        checkthread.join()
+
+
+
+    
+

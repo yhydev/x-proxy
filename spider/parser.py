@@ -22,14 +22,10 @@ class Parser:
          
         for proxystr in matchlist:
             
-            logging.debug('proxy match: %s' % proxystr)
             ip = findone(self._ipre, proxystr)
-            logging.debug('ip match: %s' % ip)
             port = findone(self._portre, proxystr)
-            logging.debug('port match: %s' % port)
             proto = findone(self._protocolre, proxystr)
-            logging.debug('protocol match: %s' % proto)
             proxy = Proxy(ip = ip, port = port)
             proxylist.append(proxy)
-        
+            logging.debug("parser.parse %s" % proxy)
         return proxylist
