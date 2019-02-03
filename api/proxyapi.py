@@ -2,29 +2,32 @@
 import sys, logging
 sys.path.append("..")
 from model import Session, Proxy
-import time
+import time, logger
 
 def add(proxy):
     session = Session()
     count = session.query(Proxy).filter(Proxy.ip == proxy.ip, Proxy.port == proxy.port).count()
-    if not count:
+    if 0 == count:
             proxy.createtime = int(time.time())
             session.add(proxy)
             session.commit()
-    session.remove()
+            logger.info("add proxy: %s" % proxy)
+    else:
+        logger.info("exists proxy: %s" % proxy)
+    session.close()
 
 
 def query(offset, limit):
     session = Session()
     proxys = session.query(Proxy).limit(limit).offset(offset).all()
-    session.remove()
+    session.close()
     return proxys
 
 def updatebyid(id, **kw):
     session = Session()
     session.query(Proxy).filter(Proxy.id == id).update(kw)
     session.commit()
-    session.remove()
+    session.close()
 
 
 

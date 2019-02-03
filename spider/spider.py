@@ -39,44 +39,37 @@ class Spider:
         urls = self._targetUrl
         if isinstance(urls, str):
             urls = [urls]
-        #代理是否有效，有效则不用获取新的代理
-        proxyflag = False
         proxies = None
         i = 0
         size = len(urls)
 
         while i < size:
     
-            if not proxyflag:
-                proxies = getproxies()
+            proxies = getproxies()
 
             try:
                 #数据库是否存在proxy 
                 if proxies == None:
                     logger.info("datebase not exists proxies.")
-                    resp = requests.get(urls[i], headers = HEADERS, timeout = 0.4)
+                    resp = requests.get(urls[i], headers = HEADERS, timeout = 1)
                 else:
                     logger.info("use proxies %s" % proxies)           
-                    resp = requests.get(urls[i], headers = HEADERS, timeout = 0.4, proxies = proxies)
+                    resp = requests.get(urls[i], headers = HEADERS, timeout = 1, proxies = proxies)
 
                 if resp.status_code == 200:
                     logger.info("成功爬取数据。")
-                    proxyflag = True
                     self._proxyText = self._proxyText + resp.text
                     i = i + 1
                 else:
                     logger.waring("resp.status_code %d" % resp.status_code)
-                    proxyflag = False
 
             except Exception as e:
                 logger.error(e)
 #                logger.exception(e)    
-                proxyflag = False
             
                 
 
     def getProxys(self):
         self._spider()
-        logger.debug(self._proxyText)
         return self._parser.parse(self._proxyText)
         

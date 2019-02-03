@@ -13,14 +13,24 @@ def crawing():
     logger.info("crawing start..")
     while True:
         for op in config.spiderConfig:
-            parser = Parser(op["proxyre"], op["ipre"], op["portre"], op["proxyre"])
-            spider = Spider(op["urls"], parser)
 
-            proxys = spider.getProxys()
+            urls = op["urls"]
+            if isinstance(urls, str):
+                urls = [urls]
             
-            for proxy in proxys:
-                proxyapi.add(proxy)     
-            
+            for url in urls:
+                parser = Parser(op["proxyre"], op["ipre"], op["portre"], op["proxyre"])
+                spider = Spider(url, parser)
+
+                proxys = spider.getProxys()
+                logger.info("crawl proxys %s" % proxys)
+
+                if len(proxys):
+                    logger.warning("crawl error for urls: %s" % op["urls"])
+
+                for proxy in proxys:
+                    proxyapi.add(proxy)     
+                
         logger.info("next crawing.")
         time.sleep(60 * 10)
         
@@ -42,9 +52,9 @@ def checkhttpproxy(proxy, targeturl):
             successcount += 1
             logger.info("check http proxy success: %s" % proxies)
         else:
-            logger.info("check http proxy error status: %s" % proxies)
+            logger.warning("check http proxy error status: %s" % proxies)
     except Exception as e:
-        logger.debug("check http proxy except %s: " % proxies)
+        logger.error("check http proxy except %s: " % proxies)
     finally:
         proxyapi.updatebyid(proxy.id, checkcount = checkcount,
              successrate =  int(successcount * 100 / checkcount),
@@ -68,20 +78,14 @@ def checkhttpproxys():
 
 if __name__ == "__main__":
 
-
-
     apiserverthread = threading.Thread(target = apiserver.run)
     apiserverthread.start()
 
     crawingthread = threading.Thread(target = crawing)
     crawingthread.start()
-    
+       
     while True:
         checkthread = threading.Thread(target = checkhttpproxys)
+        checkthread.setDaemon(True)
         checkthread.start()
         checkthread.join()
-
-
-
-    
-

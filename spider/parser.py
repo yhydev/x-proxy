@@ -16,6 +16,7 @@ class Parser:
 
 
         matchlist = re.findall(self._proxyre, text)
+        logging.info(matchlist)
         proxylist = []
         strtype = type('')
         listtype = type([])

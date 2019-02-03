@@ -3,10 +3,15 @@ import re
 
 def findone(match, string):
 
+
     if isinstance(match, str):
         if match == "":
             return string
-        return findone(re.compile(match), string)
+        res = re.search(match, string)
+        if res == None:
+            return string
+        return res.group()
+
 
     elif callable(match):
         return match(string);

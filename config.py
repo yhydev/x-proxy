@@ -22,6 +22,36 @@ urls = ["https://www.my-proxy.com/free-proxy-list-1.html",
 
 spiderConfig = []
 
+
+
+
+
+def generateurl():
+    urlss = []
+    for i in range(1, 3577):
+        urlss.append("https://www.xicidaili.com/nn/%s" % i)
+
+    for i in range(1, 725):
+        urlss.append("https://www.xicidaili.com/nt/%s" % i)
+
+    for i in range(1, 1591):
+        urlss.append("https://www.xicidaili.com/wn/%s" % i)
+
+    for i in range(1, 1938):
+        urlss.append("https://www.xicidaili.com/wt/%s" % i)
+    return urlss
+
+
+spiderConfig.append({
+    "urls": generateurl(),
+    "proxyre": ">\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\s\S]+?\d{1,5}<",
+    "ipre": ipre,
+    "portre": [">\d{1,5}<", "\d{1,5}"],
+    "prore": "",
+})
+
+
+
 """
 spiderConfig.append({
     "urls": "http://www.66ip.cn/nmtq.php?getnum=9999",
@@ -32,8 +62,7 @@ spiderConfig.append({
 })
 """
 
-
-
+"""
 
 spiderConfig.append({
     "urls": urls,
@@ -63,5 +92,4 @@ spiderConfig.append({
 })
 
 
-
-
+"""
