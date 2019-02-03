@@ -11,20 +11,20 @@ def add(proxy):
             proxy.createtime = int(time.time())
             session.add(proxy)
             session.commit()
-    session.close()
+    session.remove()
 
 
 def query(offset, limit):
     session = Session()
     proxys = session.query(Proxy).limit(limit).offset(offset).all()
-    session.close()
+    session.remove()
     return proxys
 
 def updatebyid(id, **kw):
     session = Session()
     session.query(Proxy).filter(Proxy.id == id).update(kw)
     session.commit()
-    session.close()
+    session.remove()
 
 
 
