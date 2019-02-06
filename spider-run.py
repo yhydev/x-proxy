@@ -25,7 +25,7 @@ def crawing():
                 proxys = spider.getProxys()
                 logger.info("crawl proxys %s" % proxys)
 
-                if len(proxys):
+                if len(proxys) == 0:
                     logger.warning("crawl error for urls: %s" % op["urls"])
 
                 for proxy in proxys:
@@ -52,7 +52,7 @@ def checkhttpproxy(proxy, targeturl):
             successcount += 1
             logger.info("check http proxy success: %s" % proxies)
         else:
-            logger.warning("check http proxy error status: %s" % proxies)
+            logger.info("check http proxy error status: %s" % proxies)
     except Exception as e:
         logger.error("check http proxy except %s: " % proxies)
     finally:
